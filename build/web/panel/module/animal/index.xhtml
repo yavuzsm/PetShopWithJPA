@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/panel/template/panelTemplate.xhtml">
+
+    <ui:define name="table">
+        <h:form id="tableForm">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Hayvan Türü</th>
+                        <th>Cinsiyet</th>
+                        <th>Sahip</th>
+                        <th>Yaş</th>
+                        <th>Dosya Adı</th>
+                        <th>Dosya Yolu</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ui:repeat value="#{animalBean.list}" var="animal" varStatus="loop">
+                        <tr class="#{loop.index % 2 == 0 ? 'table-primary' : 'table-secondary'}">
+                            <td>#{animal.id}</td>
+                            <td>#{animal.hayvanTuru}</td>
+                            <td>#{animal.cinsiyet}</td>
+                            <td>#{animal.owner.isim}</td>
+                            <td>#{animal.yas}</td>
+                            <td>#{animal.fileName}</td>
+                            <td>#{animal.filePath}</td>
+                            <td>
+                                <h:commandLink value="Güncelle" action="#{animalBean.setEntity(animal)}">
+                                    <f:setPropertyActionListener target="#{animalBean.entity}" value="#{animal}" />
+                                </h:commandLink>
+                                <h:commandLink value="Sil" action="#{animalBean.delete(animal)}">
+                                    <f:setPropertyActionListener target="#{animalBean.entity}" value="#{animal}" />
+                                </h:commandLink>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <h:commandButton value="Önceki Sayfa" action="#{animalBean.previousPage}" rendered="#{animalBean.pageNumber > 1}" />
+                <h:outputText value=" Sayfa #{animalBean.pageNumber} " />
+                <h:commandButton value="Sonraki Sayfa" action="#{animalBean.nextPage}" rendered="#{animalBean.list.size() == animalBean.pageSize}" />
+            </div>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="form">
+        <h:form id="formPanel" enctype="multipart/form-data">
+            <h:outputLabel value="Hayvan Türü: " for="hayvanTuru" />
+            <h:inputText id="hayvanTuru" styleClass="form-control" value="#{animalBean.entity.hayvanTuru}" /><br />
+            <h:outputLabel value="Cinsiyet: " for="cinsiyet" />
+            <h:inputText id="cinsiyet" styleClass="form-control" value="#{animalBean.entity.cinsiyet}" /><br />
+            <h:outputLabel value="Yaş: " for="yas" />
+            <h:inputText id="yas" styleClass="form-control" value="#{animalBean.entity.yas}" /><br />
+            <h:outputLabel value="Sahip ID: " for="ownerId" />
+            <h:inputText id="ownerId" styleClass="form-control" value="#{animalBean.ownerId}" /><br />
+            <h:outputLabel value="Dosya Seç: " for="file" />
+            <h:inputFile id="file" value="#{animalBean.doc}" />
+            
+            <div class="btn-animal">
+                <h:commandButton value="Yükle" action="#{animalBean.upload}" styleClass="btn btn-primary" />
+                <h:commandButton value="Güncelle" action="#{animalBean.update}" styleClass="btn btn-warning" />
+                <h:commandButton value="Sil" action="#{animalBean.delete}" styleClass="btn btn-danger" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

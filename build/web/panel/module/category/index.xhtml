@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/panel/template/panelTemplate.xhtml">
+
+    <ui:define name="table">
+        <h:form>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ui:repeat value="#{categoryBean.list}" var="category" varStatus="loop">
+                        <tr class="#{loop.index % 2 == 0 ? 'table-info' : 'table-secondary'}">
+                            <td>#{category.id}</td>
+                            <td>
+                                <h:commandLink styleClass="btn btn-link" action="#{categoryBean.setEntity(category)}" value="#{category.kategoriIsmi}" />
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <h:commandButton styleClass="btn btn-primary" value="Önceki Sayfa" action="#{categoryBean.previousPage}" rendered="#{categoryBean.pageNumber > 1}" />
+                <h:outputText value=" Sayfa #{categoryBean.pageNumber} " />
+                <h:commandButton styleClass="btn btn-primary" value="Sonraki Sayfa" action="#{categoryBean.nextPage}" rendered="#{categoryBean.list.size() == categoryBean.pageSize}" />
+            </div>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="form">
+        <h:form>
+            <div class="form-group">
+                <h:outputLabel for="categoryName" value="Category Name:" />
+                <h:inputText id="categoryName" styleClass="form-control" value="#{categoryBean.entity.kategoriIsmi}" />
+            </div>
+
+            <div class="btn-group">
+                <h:commandButton styleClass="btn btn-success" rendered="#{categoryBean.entity.id == null}" action="#{categoryBean.create}" value="Create" />
+                <h:commandButton styleClass="btn btn-info" rendered="#{categoryBean.entity.id != null}" action="#{categoryBean.update}" value="Update" />
+                <h:commandButton styleClass="btn btn-danger" rendered="#{categoryBean.entity.id != null}" action="#{categoryBean.delete}" value="Delete" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
