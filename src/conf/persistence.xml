@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="JSFPetshopKatalogPU" transaction-type="JTA">
+    <jta-data-source>deneeme</jta-data-source>
+    <class>entity.Animal</class>
+    <class>entity.Brand</class>
+    <class>entity.Category</class>
+    <class>entity.Customer</class>
+    <class>entity.FileUpload</class>
+    <class>entity.Owner</class>
+    <class>entity.Privilege</class>
+    <class>entity.Product</class>
+    <class>entity.User</class>
+    <class>entity.Favorite</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+</persistence>

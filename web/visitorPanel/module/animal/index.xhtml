@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/visitorPanel/template/visitorTemplate.xhtml">
+
+    <ui:define name="table">
+        <h:form id="tableForm">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tür</th>
+                        <th scope="col">Cinsiyet</th>
+                        <th scope="col">Yaş</th>
+                        <th scope="col">Resim</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ui:repeat value="#{animalBean.list}" var="c">
+                        <tr>
+                            <td>#{c.id}</td>
+                            <td>
+                                <h:commandLink styleClass="text-primary" action="#{animalBean.setEntity(c)}" value="#{c.hayvanTuru}">
+                                    <f:ajax render="formPanel" />
+                                </h:commandLink>
+                            </td>
+                            <td>#{c.cinsiyet}</td>
+                            <td>#{c.yas}</td>
+                            <td>
+                                <h:panelGroup layout="block" rendered="#{c.fileType.contains('image')}">
+                                    <h:graphicImage width="150" value="/image/#{c.fileName}" />
+                                </h:panelGroup>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h:commandButton styleClass="btn btn-outline-primary" value="Previous Page" action="#{animalBean.previousPage}" rendered="#{animalBean.pageNumber > 1}">
+                    <f:ajax render="tableForm" />
+                </h:commandButton>
+                <h:outputText value=" Page #{animalBean.pageNumber} " styleClass="font-weight-bold" />
+                <h:commandButton styleClass="btn btn-outline-primary" value="Next Page" action="#{animalBean.nextPage}" rendered="#{animalBean.list.size() == animalBean.pageSize}">
+                    <f:ajax render="tableForm" />
+                </h:commandButton>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
